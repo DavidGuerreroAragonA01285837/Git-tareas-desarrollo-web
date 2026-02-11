@@ -1,0 +1,106 @@
+.stack{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+input{
+    height: 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border-color: black;
+    border-width: 0.2rem;
+}
+
+.login{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    color:white;
+    font-weight: bold;
+    font-size:2rem;
+    background-color: rgba(26, 43, 91, 0.913);
+    height: 12rem;
+    width: 12rem;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 2rem;
+}
+
+button{
+    height: 2rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+}
+
+.login_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.center_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.body_center{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(https://img.freepik.com/premium-photo/dynamic-red-arrow-symbolizing-f1-car-speed-precision-black-background_1188292-5314.jpg?semt=ais_hybrid&w=740&q=80);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(90, 195, 255);
+    background-blend-mode: multiply;
+}
+
+.title{
+    font-size: 3rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+}
+
+.team_image{
+    height: 13rem;
+    border-radius: 1rem;
+}
+
+.team_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 14rem;
+    color: white;
+    
+}
+
+.team_title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 0.7rem;
+    height: 3rem;
+    font-family: "Formula-1", sans-serif;
+}
+
+@font-face {
+    font-family: "Formula-1";
+    src: url("Formula1-Black.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

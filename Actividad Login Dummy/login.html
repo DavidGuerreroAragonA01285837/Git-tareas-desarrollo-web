@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>Login Page</title>
+    </head>
+    <body class="body_center">
+        <div class="login_box">
+            <form action="destination.html" class="login" id="form">
+                <div class="stack">
+                    Login
+                    <input type="text" id="username" placeholder="Username or e-mail" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </body>
+    <script>
+        const form = document.getElementById("form");
+        form.addEventListener("submit",function(e){
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            if (!(username === "Davo995" && password === "Davo995")){
+                e.preventDefault();
+                alert("The password or the user was incorrect");
+            }
+
+        });
+    </script>
+</html>
