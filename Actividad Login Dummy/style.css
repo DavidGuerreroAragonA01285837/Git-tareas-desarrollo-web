@@ -1,3 +1,5 @@
+/* David Guerrero Aragon A01285837 */
+/* Clase stack: Clase para ordenar un div en un stack*/
 .stack{
     display: flex;
     flex-direction: column;
@@ -6,6 +8,7 @@
     gap: 1rem;
 }
 
+/* Modificador de diseno a todos los input fields en los html*/
 input{
     height: 1.5rem;
     font-size: 1rem;
@@ -14,6 +17,7 @@ input{
     border-width: 0.2rem;
 }
 
+/* Modificadores para el recuadro de form para el login*/
 .login{
     display:flex;
     flex-direction:column;
@@ -32,12 +36,14 @@ input{
     border-radius: 2rem;
 }
 
+/* Modificadores de diseno de los botones */
 button{
     height: 2rem;
     font-size: 1rem;
     border-radius: 1rem;
 }
 
+/* Modificador para el area donde se encuentra el login box */
 .login_box{
     display: flex;
     justify-content: center;
@@ -45,6 +51,7 @@ button{
     height: 90vh;
 }
 
+/* Clase para alinear todos los elementos en el centro de un espacio*/
 .center_box{
     display: flex;
     justify-content: center;
@@ -52,6 +59,7 @@ button{
     height: 50vh;
 }
 
+/* Clase para alinear todo dentro del body hacia el centro ademas de agregar una imagen de fondo con un tinte azulado */
 .body_center{
     display: flex;
     align-items: center;
@@ -63,17 +71,20 @@ button{
     background-blend-mode: multiply;
 }
 
+/* Clase para el tipo de fuente de titulo */
 .title{
     font-size: 3rem;
     font-family: "Formula-1", sans-serif;
     color: white;
 }
 
+/* Clase para el diseno de las imagenes de los equipos */
 .team_image{
     height: 13rem;
     border-radius: 1rem;
 }
 
+/* Clase para las tarjetas de los equipos */
 .team_card{
     display: flex;
     flex-direction: column;
@@ -85,6 +96,7 @@ button{
     
 }
 
+/* Clase para el cuadro de texto de los nombres de los equipos */
 .team_title{
     display: flex;
     flex-direction: column;
@@ -97,6 +109,7 @@ button{
     font-family: "Formula-1", sans-serif;
 }
 
+/* Segmento para hacer uso de una fuente custom para los titulos y nombres de equipos */
 @font-face {
     font-family: "Formula-1";
     src: url("Formula1-Black.ttf") format("ttf");
