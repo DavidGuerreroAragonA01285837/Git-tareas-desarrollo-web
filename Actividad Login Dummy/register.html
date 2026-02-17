@@ -6,7 +6,7 @@
         <!--Referencia al documento de css para el estilo de la pagina y el encoding utilizado-->
         <link rel="stylesheet" href="style.css">
         <meta charset="UTF-8">
-        <title>Login Page</title>
+        <title>Register Page</title>
     </head>
     <!--Se define el body con la clase body_center para ayudar a centrar el menu de login de forma correcta en la pantalla-->
     <body class="body_center">
@@ -15,16 +15,17 @@
             <img src="https://images.seeklogo.com/logo-png/33/2/formula-1-logo-png_seeklogo-330361.png" class="F1_logo_white">
         </div>
         <!--Se define la clase login_box para definir el diseno que va a tener el login box-->
-        <div class="login_box">
+        <div class="register_box">
             <!--Se establece un form que te envia a la pagina post-login como su accion ademas de darle clase login para el estilo y un id de form para poder extraer los inputs del usuario-->
-            <form action="teams.html" class="login" id="form">
+            <form action="teams.html" class="register" id="register_form">
                 <!--Se establece la clase stack para organizar los elementos dentro del bloque de login-->
                 <div class="stack">
-                    Login
+                    Register
                     <!--A los campos de input se les pone el tipo apropiado y el id necesario para poder leer los datos-->
-                    <input type="text" id="username" placeholder="Username or e-mail" required>
+                    <input type="text" id="name" placeholder="Full Name" required>
+                    <input type="email" id="email" placeholder="E-mail" required>
                     <input type="password" id="password" placeholder="Password" required>
-                    <div class="horizontal"><p class="text">Dont have an account?</p> <a class="link" href="register.html">REGISTER</a></div>  
+                    <input type="password" id="password_confirm" placeholder="Confirm Password" required>
                 </div>
                 <!--Se establece el tipo de boton como submit para poder enviar el form-->
                 <button type="submit">Submit</button>
@@ -37,17 +38,18 @@
             <a class="tab_element">Snapshot</a>
         </div>
     </body>
-    <!--Se define el script necesario para realizar una revision sencilla para el login con un usuario y contrasena definidos-->
+    <!--Script que revisa que el password y la confirmacion del mismo sean iguales para que el registor sea "valido"-->
     <script>
-        const form = document.getElementById("form");
+        const form = document.getElementById("register_form");
         form.addEventListener("submit",function(e){
 
-            const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
+            const password_confirm = document.getElementById("password_confirm").value.trim();
 
-            if (!(username === "Davo995" && password === "Davo995")){
+            if (password != password_confirm){
                 e.preventDefault();
-                alert("The password or the user was incorrect");
+                alert(password, password_confirm)
+                alert("Both passwords have to be the same");
             }
 
         });
