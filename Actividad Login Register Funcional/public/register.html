@@ -42,7 +42,7 @@
     <script>
         // Funcion asincrona que manda una solicitud para agregar un usuario al documento de usuarios
         async function register(nombre, email, password){
-            const response = await fetch("http://localhost:3000/request/register",{
+            const response = await fetch("/request/register",{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

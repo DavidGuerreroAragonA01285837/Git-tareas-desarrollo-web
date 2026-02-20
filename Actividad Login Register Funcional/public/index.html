@@ -43,7 +43,7 @@
         // Funcion asincrona que llama al api del nodejs para leer el documento de usuarios para revisar si los
         // datos de inicio de sesion son validos
         async function login(usuario, password){
-            const response = await fetch("http://localhost:3000/request/login",{
+            const response = await fetch("/request/login",{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
