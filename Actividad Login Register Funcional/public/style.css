@@ -1,0 +1,215 @@
+/* David Guerrero Aragon A01285837 */
+/* Clase stack: Clase para ordenar un div en un stack*/
+.stack{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Modificador de diseno a todos los input fields en los html*/
+input{
+    height: 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border-color: black;
+    border-width: 0.2rem;
+}
+
+/* Modificadores para el recuadro de form para el login*/
+.login{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    color:white;
+    font-weight: bold;
+    font-size:2rem;
+    background-color: rgba(26, 43, 91, 0.913);
+    height: 18rem;
+    width: 12rem;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 2rem;
+}
+
+/* Modificadores para el recuadro de form para el register*/
+.register{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    color:white;
+    font-weight: bold;
+    font-size:2rem;
+    background-color: rgba(26, 43, 91, 0.913);
+    height: 19rem;
+    width: 12rem;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 2rem;
+}
+
+/* Formato para los links que son texto en las paginas*/
+.link{
+    color: blue;
+    font-size: 1rem;
+}
+
+/* Formato para el texto estandar en las paginas*/
+.text{
+    font-size: 1rem;
+}
+
+/* Estilo para un contenedor de formato horizontal*/
+.horizontal{
+    font-size: 1rem;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo para el formato que debe de tener los headers de la pagina*/
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    width: 100vw;
+    height: 5vw;
+    position: absolute;
+    top: 0;
+    
+    
+}
+
+/* Estilo para el formato que debe de tener los footers de la pagina*/
+.footer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    width: 100vw;
+    height: 5vw;
+    position: absolute;
+    bottom: 0;
+}
+
+/* Formato para el logo de F1 en el header */
+.F1_logo_white{
+    filter: brightness(0) invert(1);
+    height: 9rem;
+    position: absolute;
+    left: 0;
+}
+
+/* Formato para los links de las demas paginas dentro del header */
+.tab_element{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 1rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+}
+
+/* Modificadores de diseno de los botones */
+button{
+    height: 2rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+}
+
+/* Modificador para el area donde se encuentra el login box */
+.login_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+/* Modificador para el area donde se encuentra el register box */
+.register_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+/* Clase para alinear todos los elementos en el centro de un espacio*/
+.center_box{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+/* Clase para alinear todo dentro del body hacia el centro ademas de agregar una imagen de fondo con un tinte azulado */
+.body_center{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(https://img.freepik.com/premium-photo/dynamic-red-arrow-symbolizing-f1-car-speed-precision-black-background_1188292-5314.jpg?semt=ais_hybrid&w=740&q=80);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(90, 195, 255);
+    background-blend-mode: multiply;
+}
+
+/* Clase para el tipo de fuente de titulo */
+.title{
+    padding-top: 3rem;
+    font-size: 3rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+}
+
+/* Clase para el diseno de las imagenes de los equipos */
+.team_image{
+    height: 13rem;
+    width: 13rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+/* Clase para las tarjetas de los equipos */
+.team_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 14rem;
+    color: white;
+    
+}
+
+/* Clase para el cuadro de texto de los nombres de los equipos */
+.team_title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 0.7rem;
+    height: 3rem;
+    font-family: "Formula-1", sans-serif;
+}
+
+/* Segmento para hacer uso de una fuente custom para los titulos y nombres de equipos */
+@font-face {
+    font-family: "Formula-1";
+    src: url("Formula1-Black.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
