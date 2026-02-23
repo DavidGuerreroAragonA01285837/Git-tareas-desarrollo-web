@@ -11,12 +11,7 @@
     <!--Se define el body con la clase body_center para ayudar a centrar los elementos correctamente-->
     <body class="body_center">
         <!--Se define un div que contiene todos los elementos del header de la pagina la que te ayuda a moverte entre paginas-->
-        <div class="header">
-            <img src="https://images.seeklogo.com/logo-png/33/2/formula-1-logo-png_seeklogo-330361.png" class="F1_logo_white">
-            <a href="/teams-info" class="tab_element">Team Page</p>
-            <a href="/drivers-info" class="tab_element">Driver Page</a>
-            <a href="/motor-makers-info" class="tab_element">Motor Makers</a>
-        </div>
+        <div id="header-container" class="header"></div>
         <!--Se define el titulo con el elemento h1 con la clase titulo para obtener los tamanos y disenos correctos-->
         <h1 class="title">Formula 1 Teams</h1>
         <!--Se define un div con la clase center box para establecer la configuracion del contenido-->
@@ -37,13 +32,35 @@
 
         </div>
         <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
-        <div class="footer">
-            <a class="tab_element">Instagram</p>
-            <a class="tab_element">Facebook</a>
-            <a class="tab_element">Snapshot</a>
-        </div>
+        <div class="footer" id="footer-container"></div>
     </body>
     <script>
+
+        // Funcion de logout que elimina el token y la fecha de finalizacion y regresa a la pagina de inicio de sesion
+        function logout(){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            window.location.href = "/"
+        }
+
+        // Codigo que realiza fetch al header de las paginas protegidas
+        fetch("/inner_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+            document.getElementById("logout").addEventListener("click", function(e){
+                e.preventDefault();
+                logout();
+            })
+        })
+
+        // Codigo que realiza fetch al footer
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
         // Se agrego un script para revisar si el token de sesion generado sigue activo y en caso de que no
         // lo sea se regresa a la pagina de login y se borra el token y la hora de vencimiento
         const active_token = localStorage.getItem("sessionToken");

@@ -3,7 +3,7 @@
 .stack{
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     gap: 1rem;
 }
@@ -28,7 +28,7 @@ input{
     font-weight: bold;
     font-size:2rem;
     background-color: rgba(26, 43, 91, 0.913);
-    height: 18rem;
+    height: 13rem;
     width: 12rem;
     padding: 1rem;
     padding-left: 1.5rem;
@@ -74,19 +74,31 @@ input{
     align-items: center;
 }
 
-/* Estilo para el formato que debe de tener los headers de la pagina*/
+/* Modificacion para que el body no contenga margenes para permitir un mejor diseno*/
+body{
+    margin: 0;
+}
+
+/* Estilo para el formato que debe de tener los headers interiores de la pagina*/
+.outer_header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    background-color: red;   
+    width: 100%;
+    height: 4rem;
+}
+
+/* Estilo para el formato que debe de tener los headers exteriores de la pagina*/
 .header{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    background-color: red;
-    width: 100vw;
-    height: 5vw;
-    position: absolute;
-    top: 0;
-    
-    
+    background-color: red;   
+    width: 100%;
+    height: 4rem;
 }
 
 /* Estilo para el formato que debe de tener los footers de la pagina*/
@@ -96,7 +108,7 @@ input{
     align-items: center;
     justify-content: center;
     background-color: red;
-    width: 100vw;
+    width: 100%;
     height: 5vw;
     position: absolute;
     bottom: 0;
@@ -110,6 +122,17 @@ input{
     left: 0;
 }
 
+/* Formato para el boton de logout para que se mantenga a la derecha*/
+.logout_button{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 1rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+    position: absolute;
+    right: 0;
+}
+
 /* Formato para los links de las demas paginas dentro del header */
 .tab_element{
     padding-left: 2rem;
@@ -119,9 +142,19 @@ input{
     color: white;
 }
 
+/* Formato para los botones de login y register del header de las paginas no protegidas*/
+.tab_element_right_menu{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 1rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+    
+}
+
 /* Modificadores de diseno de los botones */
 button{
-    height: 2rem;
+    height: 1.7rem;
     font-size: 1rem;
     border-radius: 1rem;
 }
@@ -132,6 +165,7 @@ button{
     justify-content: center;
     align-items: center;
     height: 90vh;
+    transform: translateY(-2rem);
 }
 
 /* Modificador para el area donde se encuentra el register box */
@@ -140,16 +174,18 @@ button{
     justify-content: center;
     align-items: center;
     height: 90vh;
+    transform: translateY(-2rem);
 }
 
 /* Clase para alinear todos los elementos en el centro de un espacio*/
 .center_box{
-
     display: flex;
     justify-content: center;
     align-items: center;
     height: 50vh;
+    transform: translateY(-4rem);
 }
+
 
 /* Clase para alinear todo dentro del body hacia el centro ademas de agregar una imagen de fondo con un tinte azulado */
 .body_center{
@@ -169,6 +205,7 @@ button{
     font-size: 3rem;
     font-family: "Formula-1", sans-serif;
     color: white;
+    transform: translateY(-2rem);
 }
 
 /* Clase para el diseno de las imagenes de los equipos */

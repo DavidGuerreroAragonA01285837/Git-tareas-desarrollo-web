@@ -11,9 +11,7 @@
     <!--Se define el body con la clase body_center para ayudar a centrar el menu de login de forma correcta en la pantalla-->
     <body class="body_center">
         <!--Se define un div que contiene todos los elementos del header de la pagina-->
-        <div class="header">
-            <img src="https://images.seeklogo.com/logo-png/33/2/formula-1-logo-png_seeklogo-330361.png" class="F1_logo_white">
-        </div>
+        <div id="header-container" class="header"></div>
         <!--Se define la clase login_box para definir el diseno que va a tener el login box-->
         <div class="register_box">
             <!--Se establece un form que te envia a la pagina post-login como su accion ademas de darle clase login para el estilo y un id de form para poder extraer los inputs del usuario-->
@@ -32,14 +30,21 @@
             </form>
         </div>
         <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
-        <div class="footer">
-            <a class="tab_element">Instagram</p>
-            <a class="tab_element">Facebook</a>
-            <a class="tab_element">Snapshot</a>
-        </div>
+        <div class="footer" id="footer-container"></div>
     </body>
     <!--Script que revisa que el password y la confirmacion del mismo sean iguales para que el registor sea "valido"-->
     <script>
+        fetch("/outer_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+        })
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
         // Funcion asincrona que manda una solicitud para agregar un usuario al documento de usuarios
         async function register(nombre, email, password){
             const response = await fetch("/request/register",{
@@ -72,7 +77,6 @@
 
             if (password != password_confirm){
                 e.preventDefault();
-                alert(password, password_confirm)
                 alert("Both passwords have to be the same");
             }
             else{

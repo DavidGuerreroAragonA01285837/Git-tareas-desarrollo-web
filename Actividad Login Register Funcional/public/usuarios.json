@@ -13,5 +13,15 @@
     "nombre": "ala",
     "email": "test@test.com",
     "password": "a"
+  },
+  {
+    "nombre": "David Guerrero",
+    "email": "guerreroa.david@gmail.com",
+    "password": "gSRm85bdrUq2C2E"
+  },
+  {
+    "nombre": "Mario",
+    "email": "mario@gmail.com",
+    "password": "Mario777"
   }
 ]

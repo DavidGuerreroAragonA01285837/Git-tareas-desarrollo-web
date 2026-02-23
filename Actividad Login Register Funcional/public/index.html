@@ -11,9 +11,7 @@
     <!--Se define el body con la clase body_center para ayudar a centrar el menu de login de forma correcta en la pantalla-->
     <body class="body_center">
         <!--Se define un div que contiene todos los elementos del header de la pagina-->
-        <div class="header">
-            <img src="https://images.seeklogo.com/logo-png/33/2/formula-1-logo-png_seeklogo-330361.png" class="F1_logo_white">
-        </div>
+        <div id="header-container" class="outer_header"></div>
         <!--Se define la clase login_box para definir el diseno que va a tener el login box-->
         <div class="login_box">
             <!--Se establece un form que te envia a la pagina post-login como su accion ademas de darle clase login para el estilo y un id de form para poder extraer los inputs del usuario-->
@@ -24,21 +22,31 @@
                     <!--A los campos de input se les pone el tipo apropiado y el id necesario para poder leer los datos-->
                     <input type="text" id="username" placeholder="Username or e-mail" required>
                     <input type="password" id="password" placeholder="Password" required>
-                    <div class="horizontal"><p class="text">Dont have an account?</p> <a class="link" href="/register">REGISTER</a></div>  
+                    <!--Se establece el tipo de boton como submit para poder enviar el form-->
+                    <button type="submit">Submit</button>
                 </div>
-                <!--Se establece el tipo de boton como submit para poder enviar el form-->
-                <button type="submit">Submit</button>
             </form>
         </div>
         <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
-        <div class="footer">
-            <a class="tab_element">Instagram</p>
-            <a class="tab_element">Facebook</a>
-            <a class="tab_element">Snapshot</a>
-        </div>
+        <div class="footer" id="footer-container"></div>
     </body>
     <!--Se define el script necesario para realizar una revision sencilla para el login con un usuario y contrasena definidos-->
     <script>
+
+        // Funcion de fetch que importa el header de el archivo outer header y lo inserta en el div con el id de header container
+        fetch("/outer_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+        })
+
+        // Funcion de fetch que importa el footer del archivo footer
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
         const form = document.getElementById("form");
         // Funcion asincrona que llama al api del nodejs para leer el documento de usuarios para revisar si los
         // datos de inicio de sesion son validos
