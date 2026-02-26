@@ -1,0 +1,82 @@
+<!--Creado por David Guerrero Aragon A01285837-->
+<!--Definicion del tipo de documento y lenguaje-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Referencia al documento de css para el estilo de la pagina y el encoding utilizado-->
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>Poke-tab!</title>
+    </head>
+    <!--Se define el body con la clase body_center para ayudar a centrar los elementos correctamente-->
+    <body class="body_center">
+        <!--Se define un div que contiene todos los elementos del header de la pagina la que te ayuda a moverte entre paginas-->
+        <div id="header-container" class="header"></div>
+        <!--Se define el titulo con el elemento h1 con la clase titulo para obtener los tamanos y disenos correctos-->
+        <h1 class="title">Who is that Pokemon?</h1>
+        <!--Se define un div con la clase center box para establecer la configuracion del contenido-->
+        
+        <div class="poke_card" id="poke-container"></div>
+        <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
+        <div class="footer" id="footer-container"></div>
+    </body>
+    <script>
+
+        // Funcion de logout que elimina el token de sesion y su fecha de caducidad
+
+        function logout(){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            window.location.href = "/"
+        }
+
+        // Fetch del header de las paginas protegidas
+
+        fetch("/inner_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+            document.getElementById("header-container").innerHTML = data;
+            document.getElementById("logout").addEventListener("click", function(e){
+                e.preventDefault();
+                logout();
+            })
+        })
+
+
+        // Fetch del footer de la pagina
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
+        // Fetch de la imagen y nombre de pokemon
+        fetch("/get-pokemon",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    numero: 1
+                })
+            })
+        .then(response => response.text())
+        .then(data =>{
+            document.getElementById("poke-container").innerHTML = data;
+        })
+
+        // Se agrego un script para revisar si el token de sesion generado sigue activo y en caso de que no
+        // lo sea se regresa a la pagina de login y se borra el token y la hora de vencimiento
+        const active_token = localStorage.getItem("sessionToken");
+        const expiration_time_active_token = localStorage.getItem("tokenExpiration");
+
+        if (!active_token || !expiration_time_active_token || expiration_time_active_token < Date.now()){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            window.location.href = "/"
+        }
+
+
+    </script>
+</html>
