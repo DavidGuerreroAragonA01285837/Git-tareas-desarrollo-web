@@ -14,36 +14,39 @@ const { stringify } = require("querystring");
 const app = express();
 const port = 3000;
 
+// Variables globales
+
+// Cache de pokemon ya buscados -----------------------------------------------------------------
+const pokemonCache  = {};
+const pokemonbyNameCache = {};
+const pokemonbyTypeCache = {
+    normal: [],
+    fire: [],
+    water: [],
+    electric: [],
+    grass: [],
+    ice: [],
+    fighting: [],
+    poison: [],
+    ground: [],
+    flying: [],
+    psychic: [],
+    bug: [],
+    rock: [],
+    ghost: [],
+    dragon: [],
+    dark: [],
+    steel: [],
+    fairy: []
+};
+const moveInfoCache = {};
+
 // Habilitar el uso de CORS
 app.use(cors());
 // Traduce el body de los requests directamente a un objeto json
 app.use(express.json());
 // Cuando un usuario entre al servidor busca los archivos de la carpeta public
 app.use(express.static("public"));
-
-// Creacion de variables globales para uso publico
-
-// Variable con el color de cada tipo de pokemon
-const typeColors = {
-    normal: "#A8A77A",
-    fire: "#EE8130",
-    water: "#6390F0",
-    electric: "#F7D02C",
-    grass: "#7AC74C",
-    ice: "#96D9D6",
-    fighting: "#C22E28",
-    poison: "#A33EA1",
-    ground: "#E2BF65",
-    flying: "#A98FF3",
-    psychic: "#F95587",
-    bug: "#A6B91A",
-    rock: "#B6A136",
-    ghost: "#735797",
-    dragon: "#6F35FC",
-    dark: "#705746",
-    steel: "#B7B7CE",
-    fairy: "#D685AD"
-};
 
 // Creacion de rutas ------------------------------------------------------------------------------
 
@@ -125,30 +128,238 @@ app.post("/request/register", (req, res) => {
 // Endpoint que retorna la informacion acerca del pokemon ditto
 app.post("/get-pokemon", async (req, res)=>{
     let pokedata = {}
-    try {
-        const response = await fetch( `https://pokeapi.co/api/v2/pokemon/${req.body.numero}`);
-        if (!response.ok){
-            throw new Error("Request failed");
+    const idfilter = req.body.id;
+    const typefilter = req.body.type;
+    const namefilter = req.body.name;
+    if (idfilter > 0){
+        if (pokemonCache[idfilter]){
+            return res.json(pokemonCache[idfilter]);
         }
+        else{
+            try {
+                const response = await fetch( `https://pokeapi.co/api/v2/pokemon/${idfilter}`);
+                if (!response.ok){
+                    throw new Error("Request failed");
+                }
 
-        pokedata = await response.json();
-    } catch (error) {
-        console.error("Error: ", error.message);
+                pokedata = await response.json();
+            } catch (error) {
+                console.error("Error: ", error.message);
+            }
+            let types = [pokedata.types[0].type.name];
+            if (pokedata.types.length == 2){
+                types.push(pokedata.types[1].type.name);
+            }
+            const stats = {
+                hp: pokedata.stats[0].base_stat,
+                attack: pokedata.stats[1].base_stat,
+                defense: pokedata.stats[2].base_stat,
+                spe_attack: pokedata.stats[3].base_stat,
+                spe_defense: pokedata.stats[4].base_stat,
+                speed: pokedata.stats[5].base_stat
+            }
+            const pokemon = {
+                id: pokedata.id,
+                name: pokedata.name,
+                abilities: pokedata.abilities,
+                types: types,
+                stats: stats,
+                image: pokedata.sprites.front_default,
+                moves: pokedata.moves
+            }
+            pokemonCache[pokedata.id] = pokemon;
+            res.json(pokemon);
+        }
     }
-    let types = '<div class="type_pill" style="--color:' + typeColors[pokedata.types[0].type.name] +'">' + String(pokedata.types[0].type.name).toUpperCase() + '</div> ';
-    if (pokedata.types[1].type.name != undefined){
-        types += '<div class="type_pill" style="--color:' + typeColors[pokedata.types[1].type.name] +'">' + String(pokedata.types[1].type.name).toUpperCase() + '</div>';
-    }
-    res.send(`
-        
-        <div class="poke_card">
-            <div class="team_title" style="color:white" ">${pokedata.name.toUpperCase()}</div>
-            <img src="${pokedata.sprites.front_default}" class="team_image">
-            <div class="horizontal"> ${types}</div>
-        </div>
+    else if (namefilter != ""){
+        if (pokemonbyNameCache[namefilter]){
+            return res.json(pokemonbyNameCache[namefilter]);
+        }
+        else{
+            try {
+                const response = await fetch( `https://pokeapi.co/api/v2/pokemon/${namefilter}`);
+                if (!response.ok){
+                    throw new Error("Request failed");
+                }
 
-    `)
+                pokedata = await response.json();
+            } catch (error) {
+                console.error("Error: ", error.message);
+            }
+            let types = [pokedata.types[0].type.name];
+            if (pokedata.types.length == 2){
+                types.push(pokedata.types[1].type.name);
+            }
+            const stats = {
+                hp: pokedata.stats[0].base_stat,
+                attack: pokedata.stats[1].base_stat,
+                defense: pokedata.stats[2].base_stat,
+                spe_attack: pokedata.stats[3].base_stat,
+                spe_defense: pokedata.stats[4].base_stat,
+                speed: pokedata.stats[5].base_stat
+            }
+            const pokemon = {
+                id: pokedata.id,
+                name: pokedata.name,
+                abilities: pokedata.abilities,
+                types: types,
+                stats: stats,
+                image: pokedata.sprites.front_default,
+                moves: pokedata.moves
+            }
+            pokemonbyNameCache[pokemon.name] = pokemon;
+            res.json(pokemon);
+        }
+    }
+    else if (typefilter != "none"){
+        if (pokemonCache[req.body.numero]){
+            if (req.body.numero < 1026){
+                return res.json(pokemonbyTypeCache[typefilter][req.body.numero -1]);
+            }
+            else {
+                return;
+            }
+        }
+        else{
+            return;
+        }
+    }
+    else{
+        if (pokemonCache[req.body.numero]){
+            return res.json(pokemonCache[req.body.numero]);
+        }
+        else{
+            try {
+                const response = await fetch( `https://pokeapi.co/api/v2/pokemon/${req.body.numero}`);
+                if (!response.ok){
+                    throw new Error("Request failed");
+                }
+
+                pokedata = await response.json();
+            } catch (error) {
+                console.error("Error: ", error.message);
+            }
+            let types = [pokedata.types[0].type.name];
+            if (pokedata.types.length == 2){
+                types.push(pokedata.types[1].type.name);
+            }
+            const stats = {
+                hp: pokedata.stats[0].base_stat,
+                attack: pokedata.stats[1].base_stat,
+                defense: pokedata.stats[2].base_stat,
+                spe_attack: pokedata.stats[3].base_stat,
+                spe_defense: pokedata.stats[4].base_stat,
+                speed: pokedata.stats[5].base_stat
+            }
+            const pokemon = {
+                id: pokedata.id,
+                name: pokedata.name,
+                abilities: pokedata.abilities,
+                types: types,
+                stats: stats,
+                image: pokedata.sprites.front_default,
+                moves: pokedata.moves
+            }
+            pokemonCache[pokedata.id] = pokemon;
+            res.json(pokemon);
+        }
+    }
 })
+
+async function preloadPokemon(){
+    for (let i = 1; i < 1025; i++){
+        let pokedata = {};
+        try {
+            const response = await fetch( `https://pokeapi.co/api/v2/pokemon/${i}`);
+            if (!response.ok){
+                throw new Error("Request failed");
+            }
+
+            pokedata = await response.json();
+        } catch (error) {
+            console.error("Error: ", error.message);
+            continue;
+        }
+        let types = [pokedata.types[0].type.name];
+        if (pokedata.types.length == 2){
+            types.push(pokedata.types[1].type.name);
+        }
+        const stats = {
+            hp: pokedata.stats[0].base_stat,
+            attack: pokedata.stats[1].base_stat,
+            defense: pokedata.stats[2].base_stat,
+            spe_attack: pokedata.stats[3].base_stat,
+            spe_defense: pokedata.stats[4].base_stat,
+            speed: pokedata.stats[5].base_stat
+        }
+        
+        const moves = [];
+        const usedIndexes = new Set();
+
+        while (moves.length < 4 && usedIndexes.size < pokedata.moves.length) {
+            const randomIndex = Math.floor(Math.random() * pokedata.moves.length);
+
+            if (!usedIndexes.has(randomIndex)) {
+                usedIndexes.add(randomIndex);
+
+                const moveName = pokedata.moves[randomIndex].move.name;
+                const move = moveInfoCache[moveName];
+
+                if (move) { // only push if move exists in cache
+                    moves.push(move);
+                }
+            }
+        }
+        const pokemon = {
+            id: pokedata.id,
+            name: pokedata.name,
+            abilities: pokedata.abilities,
+            types: types,
+            stats: stats,
+            image: pokedata.sprites.front_default,
+            moves: moves
+        }
+        pokemonCache[pokemon.id] = pokemon;
+        pokemonbyNameCache[pokemon.name] = pokemon;
+        pokemonbyTypeCache[pokemon.types[0]].push(pokemon);
+        if (pokemon.types.length == 2){
+            pokemonbyTypeCache[pokemon.types[1]].push(pokemon);
+        }
+    }
+    console.log("Pokemon pre-loaded");
+}
+
+async function preloadMoves(){
+    let movedata = {};
+    for (let i = 1; i < 248; i++){
+        
+        try {
+            const response = await fetch(`https://pokeapi.co/api/v2/move/${i}/`);
+            if (!response.ok){
+                throw new Error("Request failed");
+            }
+            movedata = await response.json();
+        }
+        catch (error) {
+            console.error("Error: ", error.message);
+            continue;
+        }
+        const moveinfo = {
+            name: movedata.name,
+            power: movedata.power,
+            type: movedata.type.name
+        };
+        moveInfoCache[movedata.name] = moveinfo;
+    }
+    console.log("Moves pre-loaded");
+}
+
+async function init(){
+    await preloadMoves();
+    await preloadPokemon();
+}
+
+init();
 
 // Inicializacion del server -----------------------------------------------------------------------
 

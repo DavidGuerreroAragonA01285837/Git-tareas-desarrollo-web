@@ -112,7 +112,7 @@ body{
     background-color: red;
     width: 100%;
     height: 5vw;
-    position: absolute;
+    position: relative;
     bottom: 0;
 }
 
@@ -166,7 +166,7 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 80.4vh;
     transform: translateY(-2rem);
 }
 
@@ -175,7 +175,7 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 80.4vh;
     transform: translateY(-2rem);
 }
 
@@ -184,7 +184,7 @@ button{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50vh;
+    height: 54vh;
     transform: translateY(-4rem);
 }
 
@@ -226,9 +226,22 @@ button{
     align-items: center;
     padding-left: 1rem;
     padding-right: 1rem;
+    
     width: 14rem;
     color: white;
     
+}
+
+.poke_title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-family: "Formula-1", sans-serif;
 }
 
 /* Clase para la tarjeta del pokemon*/
@@ -238,10 +251,101 @@ button{
     align-items: center;
     padding-left: 1rem;
     padding-right: 1rem;
-    width: 14rem;
+    width: 11rem;
     background-color: blue;
     border-radius: 1rem;
-    height: 15rem;
+    height: 13rem;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.poke_card.flipped{
+    transform: rotateY(180deg);
+}
+
+.card-front {
+  background: #4a90e2;
+
+}
+
+.card-back {
+  background: #e94e77;
+  transform: rotateY(180deg);
+  position: absolute;
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card_container{
+    perspective: 100rem;
+    width:10rem;
+    height:13rem;
+}
+
+.poke_image{
+    height: 7rem;
+    
+    border-radius: 1rem;
+    overflow: hidden;
+    object-fit:fill;
+}
+
+.poke_scroll{
+    display: grid;
+    width: 55rem;
+    height: 30rem;
+    overflow-y: auto;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+.poke_button{
+    margin: 1rem;
+}
+
+.type-selector{
+    width: 10rem;
+    padding:0.3rem;
+    font-size: 0.9rem;
+}
+
+.type-selector::-webkit-scrollbar {
+  display: none;
+}
+
+.poke_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pokestat{
+    font-size:0.7rem;
+    margin: 0.3rem;
+    font-weight: bold;
+    color: white;
+}
+
+.stat_container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: 0.1rem;
 }
 
 /* Clase para el cuadro de texto de los nombres de los equipos */
@@ -267,6 +371,24 @@ button{
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
     font-weight: bold;
+}
+
+.move_pill{
+    background-color: var(--color);
+    color: white;
+    border-radius: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    font-weight: bold;
+    font-size: 0.5rem;
+    margin: 0.2rem;
+}
+
+.move_container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 /* Segmento para hacer uso de una fuente custom para los titulos y nombres de equipos */
