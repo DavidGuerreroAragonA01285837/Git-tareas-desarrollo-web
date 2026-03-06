@@ -125,12 +125,13 @@ app.post("/request/register", (req, res) => {
 
 })
 
-// Endpoint que retorna la informacion acerca del pokemon ditto
+// Endpoint que retorna la informacion de el pokemon solicitado dependiendo del id, nombre y tipo
 app.post("/get-pokemon", async (req, res)=>{
     let pokedata = {}
     const idfilter = req.body.id;
     const typefilter = req.body.type;
     const namefilter = req.body.name;
+    // Si existe un filtro por id
     if (idfilter > 0){
         if (pokemonCache[idfilter]){
             return res.json(pokemonCache[idfilter]);
@@ -171,6 +172,7 @@ app.post("/get-pokemon", async (req, res)=>{
             res.json(pokemon);
         }
     }
+    // Si existe un filtro por nombre
     else if (namefilter != ""){
         if (pokemonbyNameCache[namefilter]){
             return res.json(pokemonbyNameCache[namefilter]);
@@ -211,6 +213,7 @@ app.post("/get-pokemon", async (req, res)=>{
             res.json(pokemon);
         }
     }
+    // Si existe filtro por tipo
     else if (typefilter != "none"){
         if (pokemonCache[req.body.numero]){
             if (req.body.numero < 1026){
@@ -224,6 +227,7 @@ app.post("/get-pokemon", async (req, res)=>{
             return;
         }
     }
+    // Si no existen filtros
     else{
         if (pokemonCache[req.body.numero]){
             return res.json(pokemonCache[req.body.numero]);
@@ -266,6 +270,8 @@ app.post("/get-pokemon", async (req, res)=>{
     }
 })
 
+// Funcion que precarga la informacion de los pokemon al inicializar el servidor de node para evitar tiempos
+// de carga prolongados a la hora de aplicar filtros y los guarda en caches
 async function preloadPokemon(){
     for (let i = 1; i < 1025; i++){
         let pokedata = {};
@@ -329,6 +335,7 @@ async function preloadPokemon(){
     console.log("Pokemon pre-loaded");
 }
 
+// Funcion que precarga la informacion de los movimientos y los guarda en los caches
 async function preloadMoves(){
     let movedata = {};
     for (let i = 1; i < 248; i++){
@@ -354,11 +361,14 @@ async function preloadMoves(){
     console.log("Moves pre-loaded");
 }
 
+// Funcion de inicializacion que ejecuta las funciones de precarga de movimientos para los pokemon y movimientos
+// en orden para evitar errores de elementos no cargados.
 async function init(){
     await preloadMoves();
     await preloadPokemon();
 }
 
+// Llamado de funcion de inicializacion
 init();
 
 // Inicializacion del server -----------------------------------------------------------------------

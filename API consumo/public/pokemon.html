@@ -14,6 +14,7 @@
         <div id="header-container" class="header"></div>
         <!--Se define el titulo con el elemento h1 con la clase titulo para obtener los tamanos y disenos correctos-->
         <h1 class="title">Who is that Pokemon?</h1>
+        <!--Se define el segmento de filtros para la pokedex-->
         <div class="pokefilters">
             <input type="text" id="pokeid"  placeholder="Id Pokemon">
             <input type="text" id="pokename"  placeholder="Name">
@@ -47,6 +48,7 @@
         <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
         <div class="footer" id="footer-container"></div>
     </body>
+    <!--Se define el template de la pokecard para poder mandarla llamar en cada instancia de pokemon-->
     <template id="pokecard">
         <div class="card_container">
             <div class="poke_card" id="flipcard">
@@ -71,10 +73,12 @@
     </template>
     <script>
 
+        // Definicion de variables que almacenan los filtros
         let filterByType ="none";
         let filterByName = "";
         let filterById = 0;
 
+        // Definicion del id o numero de pokemon llamado la ultima ocasion
         let current_id = 1;
 
         // Variable con el color de cada tipo de pokemon
@@ -99,6 +103,8 @@
             fairy: "#D685AD"
         };
 
+        // Segmento que controla el "flipping" de las tarjetas de los pokemon y causa que solo pueda haber uno
+        // seleccionado a la vez
         let last;
         document.addEventListener("click", function(e) {
             const card = e.target.closest(".poke_card");
@@ -132,13 +138,6 @@
             })
         })
 
-        function deletefire(){
-            const cards = document.querySelectorAll(`.card_container[data-type1="fire"]`)
-            for (let i = 0; i < cards.length; i++){
-                cards[i].remove();
-            }
-        }
-
         // Fetch del footer de la pagina
         fetch("/footer.html")
         .then(response => response.text())
@@ -146,7 +145,7 @@
             document.getElementById("footer-container").innerHTML = data;
         })
 
-        // Fetch de la imagen y nombre de pokemon
+        // Funcion de agregado de pokemon que manda un fetch al api con los filtros seleccionados como contenido
         async function addPokemon(){
             let cant = 20;
             if (filterById != 0 || filterByName != ""){
@@ -169,6 +168,7 @@
                     })
                 .then(response => response.text())
                 .then(data =>{
+                    // Se construye el objeto de la tarjeta de pokemon usando el template
                     const pokedata = JSON.parse(data);
                     filterData = pokedata;
                     const template = document.getElementById("pokecard");
@@ -258,6 +258,8 @@
             orderbyID();
         }
 
+        // Funcion que guarda en las variables de filtro los filtros seleccionados y reinicia los indices de
+        // pokemon
         async function applyFilters(){
             current_id = 1;
             document.getElementById("poke-container").textContent = "";
@@ -268,6 +270,7 @@
 
         }
 
+        // Funcion que se ejecuta en cada llamada de pokemon para ordenar los pokemon en orden por id
         function orderbyID(){
             const container = document.getElementById("poke-container");
 
@@ -278,6 +281,7 @@
             cards.forEach(card => container.appendChild(card));
         }
 
+        // Llamado inicial de agregar pokemon para que no aparezca vacio inicialmente
         addPokemon();
 
         // Se agrego un script para revisar si el token de sesion generado sigue activo y en caso de que no
