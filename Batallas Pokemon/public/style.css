@@ -1,0 +1,501 @@
+/* David Guerrero Aragon A01285837 */
+/* Clase stack: Clase para ordenar un div en un stack*/
+.stack{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Modificador de diseno a todos los input fields en los html*/
+input{
+    height: 1.5rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border-color: black;
+    border-width: 0.2rem;
+}
+
+/* Modificadores para el recuadro de form para el login*/
+.login{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    color:white;
+    font-weight: bold;
+    font-size:2rem;
+    background-color: rgba(26, 43, 91, 0.913);
+    height: 13rem;
+    width: 12rem;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 2rem;
+}
+
+/* Modificadores para el recuadro de form para el register*/
+.register{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    color:white;
+    font-weight: bold;
+    font-size:2rem;
+    background-color: rgba(26, 43, 91, 0.913);
+    height: 19rem;
+    width: 12rem;
+    padding: 1rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    border-radius: 2rem;
+}
+
+/* Formato para los links que son texto en las paginas*/
+.link{
+    color: blue;
+    font-size: 1rem;
+}
+
+/* Formato para el texto estandar en las paginas*/
+.text{
+    font-size: 1rem;
+}
+
+/* Estilo para un contenedor de formato horizontal*/
+.horizontal{
+    display: flex;
+    font-size: 1rem;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Modificacion para que el body no contenga margenes para permitir un mejor diseno*/
+body{
+    margin: 0;
+}
+
+/* Estilo para el formato que debe de tener los headers interiores de la pagina*/
+.outer_header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    background-color: red;   
+    width: 100%;
+    height: 4rem;
+}
+
+/* Estilo para el formato que debe de tener los headers exteriores de la pagina*/
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: red;   
+    width: 100%;
+    height: 4rem;
+}
+
+/* Estilo para el formato que debe de tener los footers de la pagina*/
+.footer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    width: 100%;
+    height: 5vw;
+    margin-top: auto;
+}
+
+/* Formato para el logo de F1 en el header */
+.F1_logo_white{
+    filter: brightness(0) invert(1);
+    height: 9rem;
+    position: absolute;
+    left: 0;
+}
+
+/* Formato para el boton de logout para que se mantenga a la derecha*/
+.logout_button{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 1rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+    position: absolute;
+    right: 0;
+}
+
+/* Formato para los links de las demas paginas dentro del header */
+.tab_element{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 1rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+}
+
+/* Formato para los botones de login y register del header de las paginas no protegidas*/
+.tab_element_right_menu{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 1rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+    
+}
+
+/* Modificadores de diseno de los botones */
+button{
+    height: 1.7rem;
+    font-size: 1rem;
+    border-radius: 1rem;
+}
+
+/* Modificador para el area donde se encuentra el login box */
+.login_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80.4vh;
+    transform: translateY(-2rem);
+}
+
+/* Modificador para el area donde se encuentra el register box */
+.register_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80.4vh;
+    transform: translateY(-2rem);
+}
+
+/* Clase para alinear todos los elementos en el centro de un espacio*/
+.center_box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 54vh;
+    transform: translateY(-4rem);
+}
+
+
+/* Clase para alinear todo dentro del body hacia el centro ademas de agregar una imagen de fondo con un tinte azulado */
+.body_center{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-image: url(https://img.freepik.com/premium-photo/dynamic-red-arrow-symbolizing-f1-car-speed-precision-black-background_1188292-5314.jpg?semt=ais_hybrid&w=740&q=80);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: rgb(90, 195, 255);
+    background-attachment: fixed;
+    background-blend-mode: multiply;
+    min-height: 100vh;
+}
+
+/* Clase para el tipo de fuente de titulo */
+.title{
+    padding-top: 3rem;
+    font-size: 3rem;
+    font-family: "Formula-1", sans-serif;
+    color: white;
+    transform: translateY(-2rem);
+}
+
+/* Clase para el diseno de las imagenes de los equipos */
+.team_image{
+    height: 13rem;
+    width: 13rem;
+    border-radius: 1rem;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+/* Clase para las tarjetas de los equipos */
+.team_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+    width: 14rem;
+    color: white;
+    
+}
+
+/* Clase para el diseno de el nombre de los pokemon en la tarjeta*/
+.poke_title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    font-family: "Formula-1", sans-serif;
+}
+
+/* Clase para la tarjeta del pokemon*/
+.poke_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    width: 11rem;
+    background-color: blue;
+    border-radius: 1rem;
+    height: 13rem;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+/* Definicion del estado flipped de la clase poke card*/
+.poke_card.flipped{
+    transform: rotateY(180deg);
+}
+
+/*Estilo de la parte frontal de la tarjeta*/
+.card-front {
+  background: #4a90e2;
+
+}
+
+/*Estilo de la parte trasera de la tarjeta*/
+.card-back {
+  background: #e94e77;
+  transform: rotateY(180deg);
+  position: absolute;
+}
+
+/*Definicion del estilo para la parte frontal y trasera de las tarjetas para cuestiones de visibilidad*/
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Definicion de clase del contenedor de una tarjeta*/
+.card_container{
+    perspective: 100rem;
+    width:10rem;
+    height:13rem;
+}
+
+/* Definicion de la clase para las imagenes de los pokemon*/
+.poke_image{
+    height: 7rem;
+    
+    border-radius: 1rem;
+    overflow: hidden;
+    object-fit:fill;
+}
+
+/* Definicion de la clase para el scroll que contiene a todos los pokemon mostrados en el grid*/
+.poke_scroll{
+    display: grid;
+    width: 55rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+}
+
+/* Definicion de la clase para el boton de aplicar filtros*/
+.poke_button{
+    margin: 1rem;
+}
+
+/* Definicion de la clase para el selector de tipos de los filtros*/
+.type-selector{
+    width: 10rem;
+    padding:0.3rem;
+    font-size: 0.9rem;
+}
+
+/* Modificacion del selector de tipo para que no aparezca el scrollbar*/
+.type-selector::-webkit-scrollbar {
+  display: none;
+}
+
+/* Modificacion del scroll d epokemon para que no aparezca el scrollbar*/
+.poke_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Definicion de la clase para las estadisticas de los pokemon*/
+.pokestat{
+    font-size:0.7rem;
+    margin: 0.3rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Definicion de la clase para el contenedor de las estadisticas*/
+.stat_container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: 0.1rem;
+}
+
+/* Clase para el cuadro de texto de los nombres de los equipos */
+.team_title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+    padding: 0.7rem;
+    height: 3rem;
+    font-family: "Formula-1", sans-serif;
+}
+
+/* Clase para el estilo del cuadro don el tipo de cada pokemon*/
+.type_pill{
+    background-color: var(--color);
+    color: white;
+    border-radius: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    font-weight: bold;
+}
+
+/* Clase para el estilo de los recuadros con los movimientos*/
+.move_pill{
+    background-color: var(--color);
+    color: white;
+    border-radius: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    font-weight: bold;
+    font-size: 0.5rem;
+    margin: 0.2rem;
+}
+
+/* Clase para el contenedor de los movimienots para que estos se muestren en formato de grid*/
+.move_container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.battle_container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    gap: 5rem;
+    transform: translateY(-2rem);
+}
+
+.battle_win_container{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    transform: translateY(-2rem);
+}
+
+.lifebar_container{
+    display: grid;
+    grid-template-columns: repeat(2, 10rem);
+    justify-content: center;
+    gap: 5rem;
+}
+
+.poke_life{
+    width: 13rem;
+    border-radius: 10rem;
+    overflow: hidden;
+}
+
+.hidden{
+    display: none;
+}
+
+.poke_life::-webkit-progress-bar {
+    background-color: #444;
+}
+
+.poke_life::-webkit-progress-value {
+    background-color: limegreen;
+}
+
+.selected .poke_button{
+    display: none;
+}
+
+.battle_text{
+    display: flex;
+    margin: 1rem;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 30rem;
+    height: 2rem;
+    border-radius: 10rem;
+}
+
+.damage{
+    animation: shake 0.4s infinite;
+    filter: brightness(0.6) sepia(1) hue-rotate(-50deg) saturate(6);   
+}
+
+.defense{
+    animation: vertical-shake 2s infinite;
+    filter: brightness(0.6) sepia(1) hue-rotate(180deg) saturate(6);   
+}
+
+.battle_text.hidden{
+    display: none;
+}
+
+@keyframes vertical-shake{
+    0% {transform: translate(0rem, 0rem); }
+    20% {transform: translate(0rem, -1rem); }
+    40% {transform: translate(0rem, 1rem); }
+    60% {transform: translate(0rem, -1rem); }
+    80% {transform: translate(0rem, 1rem); }
+    100% {transform: translate(0rem, 0rem); }
+}
+
+@keyframes shake {
+    0% { transform: translate(0rem, 0rem); }
+    20% { transform: translate(-1rem, 0rem); }
+    40% { transform: translate(1rem, 0rem); }
+    60% { transform: translate(-1rem, 0rem); }
+    80% { transform: translate(1rem, 0rem); }
+    100% { transform: translate(0rem, 0rem); }
+}
+
+/* Segmento para hacer uso de una fuente custom para los titulos y nombres de equipos */
+@font-face {
+    font-family: "Formula-1";
+    src: url("Formula1-Black.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

@@ -1,0 +1,104 @@
+<!--Creado por David Guerrero Aragon A01285837-->
+<!--Definicion del tipo de documento y lenguaje-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Referencia al documento de css para el estilo de la pagina y el encoding utilizado-->
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>Login Page</title>
+    </head>
+    <!--Se define el body con la clase body_center para ayudar a centrar el menu de login de forma correcta en la pantalla-->
+    <body class="body_center">
+        <!--Se define un div que contiene todos los elementos del header de la pagina-->
+        <div id="header-container" class="outer_header"></div>
+        <!--Se define la clase login_box para definir el diseno que va a tener el login box-->
+        <div class="login_box">
+            <!--Se establece un form que te envia a la pagina post-login como su accion ademas de darle clase login para el estilo y un id de form para poder extraer los inputs del usuario-->
+            <form class="login" id="form">
+                <!--Se establece la clase stack para organizar los elementos dentro del bloque de login-->
+                <div class="stack">
+                    Login
+                    <!--A los campos de input se les pone el tipo apropiado y el id necesario para poder leer los datos-->
+                    <input type="text" id="username" placeholder="Username or e-mail" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <!--Se establece el tipo de boton como submit para poder enviar el form-->
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
+        <div class="footer" id="footer-container"></div>
+    </body>
+    <!--Se define el script necesario para realizar una revision sencilla para el login con un usuario y contrasena definidos-->
+    <script>
+
+        // Funcion de fetch que importa el header de el archivo outer header y lo inserta en el div con el id de header container
+        fetch("/outer_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+        })
+
+        // Funcion de fetch que importa el footer del archivo footer
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
+        const form = document.getElementById("form");
+        // Funcion asincrona que llama al api del nodejs para leer el documento de usuarios para revisar si los
+        // datos de inicio de sesion son validos
+        async function login(usuario, password){
+            const response = await fetch("/request/login",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: usuario,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+            console.log(data);
+            return data;
+        }
+
+        // Event listener que detecta cuando se selecciona el boton de submit del formato para mandar a llamar
+        // la funcion de login
+        form.addEventListener("submit",async function(e){
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            const res = await login(username, password);
+            
+            const {message} = res;
+           
+            // Mensaje de error en caso de que el login sea erroneo
+            if (message == "Failed"){
+                alert("The password or the user was incorrect");
+                e.preventDefault();
+            }
+            else if (message == "Success"){
+                // Si el login fue exitoso se genera un token, una fecha de vencimiento y se manda a la pagina
+                // de informacion de equipos
+                const token = "abc123";
+                const expiration_time = Date.now() + (60 * 1000);
+                localStorage.setItem("sessionToken", token);
+                localStorage.setItem("tokenExpiration",expiration_time);
+                last_team = localStorage.getItem("lastPage");
+                if (last_team){
+                    window.location.href = last_team;
+                }
+                else{
+                    window.location.href = "/teams-info"
+                }
+            }
+
+        });
+    </script>
+</html>

@@ -1,0 +1,475 @@
+<!--Creado por David Guerrero Aragon A01285837-->
+<!--Definicion del tipo de documento y lenguaje-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Referencia al documento de css para el estilo de la pagina y el encoding utilizado-->
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>Poke-battles!</title>
+    </head>
+    <!--Se define el body con la clase body_center para ayudar a centrar los elementos correctamente-->
+    <body class="body_center">
+        <!--Se define un div que contiene todos los elementos del header de la pagina la que te ayuda a moverte entre paginas-->
+        <div id="header-container" class="header"></div>
+        <!--Se define el titulo con el elemento h1 con la clase titulo para obtener los tamanos y disenos correctos-->
+        <h1 class="title">Lets Battle!</h1>
+        <!--Se define el segmento de filtros para la pokedex-->
+        <div class="battle_container" id="battle_container"></div>
+        <div class="lifebar_container">
+            <progress class="poke_life" id="pokemon_1" value="100" max="100">HP</progress>
+            <progress class="poke_life" id="pokemon_2" value="100" max="100">HP</progress>
+        </div>
+        <button onclick="simulate_battle()" class="poke_button" id="start_battle">Let's Battle!</button>
+        <button onclick="reset_battle()" class="poke_button hidden" id="reset_battle">Reset!</button>
+        <div class="battle_text hidden" id="battle-text">Starting battle...</div>
+        <div class="pokefilters">
+            <input type="text" id="pokeid"  placeholder="Id Pokemon">
+            <input type="text" id="pokename"  placeholder="Name">
+            <select id="type" class="type-selector">
+                <option value="none">Select a type</option>
+                <option value="fire">Fire</option>
+                <option value="water">Water</option>
+                <option value="electric">Electric</option>
+                <option value="psychic">Psychic</option>
+                <option value="ground">Ground</option>
+                <option value="grass">Grass</option>
+                <option value="fighting">Fighting</option>
+                <option value="rock">Rock</option>
+                <option value="dark">Dark</option>
+                <option value="bug">Bug</option>
+                <option value="dragon">Dragon</option>
+                <option value="fairy">Fairy</option>
+                <option value="flying">Flying</option>
+                <option value="ghost">Ghost</option>
+                <option value="ice">Ice</option>
+                <option value="normal">Normal</option>
+                <option value="poison">Poison</option>
+                <option value="steel">Steel</option>
+            </select>
+            <button onclick="applyFilters()" class="poke_button">Apply filters</button>
+        </div>
+        <!--Se define un div con la clase center box para establecer la configuracion del contenido-->
+        <div class="poke_scroll" id="poke-container"></div>
+        <!--Se define un boton que trae mas pokemon de los que hay-->
+        <button onclick="addPokemon()" class="poke_button">More Pokemon</button>
+        <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
+        <div class="footer" id="footer-container"></div>
+    </body>
+    <!--Se define el template de la pokecard para poder mandarla llamar en cada instancia de pokemon-->
+    <template id="pokecard_battle">
+        <div class="card_container">
+            <div class="poke_card" id="flipcard">
+                <div class="card-front">
+                    <div class="poke_title" style="color:white" id="name"></div>
+                    <img src="" class="sprite" id="sprite">
+                    <div class="horizontal" id="types"></div>
+                </div>
+                <div class="card-back"> 
+                    <div class="stat_container" id="stats">
+                        <p class="pokestat" id="hp"></p>
+                        <p class="pokestat" id="attack"></p>
+                        <p class="pokestat" id="defense"></p>
+                        <p class="pokestat" id="spe-attack"></p>
+                        <p class="pokestat" id="spe-defense"></p>
+                        <p class="pokestat" id="speed"></p>
+                    </div>
+                    <div class ="move_container" id="moves"></div>
+                    <button onclick="select_Pokemon(this.closest('.card_container'))" class="poke_button"> Select pokemon</button>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+
+        // Definicion de variables que almacenan los filtros
+        let filterByType ="none";
+        let filterByName = "";
+        let filterById = 0;
+        let selectedPokemon = [];
+
+        // Definicion del id o numero de pokemon llamado la ultima ocasion
+        let current_id = 1;
+
+        let reset = true;
+
+        // Variable con el color de cada tipo de pokemon
+        const typeColors = {
+            normal: "#A8A77A",
+            fire: "#EE8130",
+            water: "#6390F0",
+            electric: "#F7D02C",
+            grass: "#7AC74C",
+            ice: "#96D9D6",
+            fighting: "#C22E28",
+            poison: "#A33EA1",
+            ground: "#E2BF65",
+            flying: "#A98FF3",
+            psychic: "#F95587",
+            bug: "#A6B91A",
+            rock: "#B6A136",
+            ghost: "#735797",
+            dragon: "#6F35FC",
+            dark: "#705746",
+            steel: "#B7B7CE",
+            fairy: "#D685AD"
+        };
+
+        // Segmento que controla el "flipping" de las tarjetas de los pokemon y causa que solo pueda haber uno
+        // seleccionado a la vez
+        let last;
+        document.addEventListener("click", function(e) {
+            const card = e.target.closest(".poke_card");
+            if (card) {
+                if (last && card != last){
+                last.classList.remove("flipped");
+                }
+                card.classList.toggle("flipped");
+                last = card;
+            }
+        });
+
+        // Funcion de logout que elimina el token de sesion y su fecha de caducidad
+
+        function logout(){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            localStorage.removeItem("lastPage");
+            window.location.href = "/"
+        }
+
+        // Fetch del header de las paginas protegidas
+
+        fetch("/inner_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+            document.getElementById("header-container").innerHTML = data;
+            document.getElementById("logout").addEventListener("click", function(e){
+                e.preventDefault();
+                logout();
+            })
+        })
+
+        // Fetch del footer de la pagina
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
+        // Funcion de agregado de pokemon que manda un fetch al api con los filtros seleccionados como contenido
+        async function addPokemon(){
+            let cant = 20;
+            if (filterById != 0 || filterByName != ""){
+                cant = 1;
+            }
+            let filterData = {};
+            let cardstoAdd = [];
+            for (let i = 0; i < cant; i++){
+                await fetch("/get-pokemon",{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            numero: current_id,
+                            name: filterByName,
+                            type: filterByType,
+                            id: filterById
+                        })
+                    })
+                .then(response => response.text())
+                .then(data =>{
+                    // Se construye el objeto de la tarjeta de pokemon usando el template
+                    const pokedata = JSON.parse(data);
+                    filterData = pokedata;
+                    const template = document.getElementById("pokecard_battle");
+                    let clone = template.content.cloneNode(true);
+                    clone.querySelector("#name").textContent = String("#" + pokedata.id) + " " +String(pokedata.name).toUpperCase();
+                    clone.querySelector("#sprite").src = pokedata.image;
+                    let type1 = document.createElement("p");
+                    type1.classList.add("type_pill")
+                    type1.textContent = String(pokedata.types[0]).toUpperCase();
+                    type1.style.setProperty("--color", typeColors[pokedata.types[0]]);
+                    let type2 = document.createElement("p");
+                    type2.classList.add("type_pill")
+                    clone.querySelector("#types").appendChild(type1);
+                    let card = clone.querySelector(".card_container");
+                    card.setAttribute("data-type1", pokedata.types[0]);
+                    card.id = String("Pokemon" + pokedata.id);
+                    if (pokedata.types.length == 2){
+                        type2.textContent = String(pokedata.types[1]).toUpperCase();
+                        type2.style.setProperty("--color", typeColors[pokedata.types[1]]);
+                        clone.querySelector("#types").appendChild(type2);
+                        card.setAttribute("data-type2", pokedata.types[1]);
+                    }
+                    clone.querySelector("#hp").textContent = "HP: " + pokedata.stats.hp;
+                    clone.querySelector("#attack").textContent = "ATT: " + pokedata.stats.attack;
+                    clone.querySelector("#defense").textContent = "DEF: " + pokedata.stats.defense;
+                    clone.querySelector("#spe-attack").textContent = "SPE-ATT: " + pokedata.stats.spe_attack;
+                    clone.querySelector("#spe-defense").textContent = "SPE-DEF: " + pokedata.stats.spe_defense;
+                    clone.querySelector("#speed").textContent = "SPE: " + pokedata.stats.speed;
+                    const moves = [];
+                    moves.push(document.createElement("p"));
+                    moves.push(document.createElement("p"));
+                    moves.push(document.createElement("p"));
+                    moves.push(document.createElement("p"));
+                    for (let i = 0; i < 4 && i < pokedata.moves.length; i++){
+                        if (pokedata.moves[i]){
+                            moves[i].classList.add("move_pill");
+                            moves[i].textContent = String(pokedata.moves[i].name).toUpperCase();
+                            moves[i].style.setProperty("--color", typeColors[pokedata.moves[i].type])
+                            clone.querySelector("#moves").appendChild(moves[i]);
+                        }
+                    }
+                    if (filterByType != "none"){
+                        let isCorrectType = false;
+                        for (let i = 0; i < filterData.types.length; i++){
+                            if (filterByType == filterData.types[i]){
+                                isCorrectType = true;
+                            }
+                        }
+                        if (!isCorrectType){
+                            i--;
+                        }
+                        else{
+                            cardstoAdd.push(clone);
+                        }
+                    }
+                    else if (filterByName != ""){
+                        if (filterByName == filterData.name){
+                            cardstoAdd.push(clone);
+                        }
+                        else {
+                            i--;
+                        }
+                        
+                    }
+                    else if (filterById != 0){
+                        if (filterById == filterData.id){
+                            cardstoAdd.push(clone);
+                        }
+                        else {
+                            i--;
+                        }
+                        
+                    }
+                    else{
+                        cardstoAdd.push(clone);
+                    }
+                })
+                current_id ++;
+            }
+            let fragment = document.createDocumentFragment();
+            cardstoAdd.forEach(element => {
+                fragment.appendChild(element);
+            });
+            document.getElementById("poke-container").appendChild(fragment);
+            orderbyID();
+        }
+
+        // Funcion que guarda en las variables de filtro los filtros seleccionados y reinicia los indices de
+        // pokemon
+        async function applyFilters(){
+            current_id = 1;
+            document.getElementById("poke-container").textContent = "";
+            filterById = document.getElementById("pokeid").value.trim();
+            filterByType = document.getElementById("type").value.trim();
+            filterByName = document.getElementById("pokename").value.trim();
+            addPokemon();
+
+        }
+
+        // Funcion que se ejecuta en cada llamada de pokemon para ordenar los pokemon en orden por id
+        function orderbyID(){
+            const container = document.getElementById("poke-container");
+
+            let cards = Array.from(container.children);
+
+            cards.sort((a,b) =>
+            parseInt(a.id.replace("Pokemon","")) -
+            parseInt(b.id.replace("Pokemon","")));
+
+            cards.forEach(card => container.appendChild(card));
+        }
+
+        async function simulate_battle(){
+            reset = false;
+            const response = await fetch("/poke-battle",{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            pokemon_1: Number(String(selectedPokemon[0].id).slice(7)),
+                            pokemon_2: Number(String(selectedPokemon[1].id).slice(7))
+                        })
+                    })
+            const battle_data = await response.json();
+            //alert(`The winner is: ${battle_log.winner} by ${battle_log.battle_log[battle_log.battle_log.length - 1].pokemon_1.hp - battle_log.battle_log[battle_log.battle_log.length - 1].pokemon_2.hp}`);
+            animate_battle(battle_data);
+        }
+
+        async function animate_battle(battle_data){
+            document.getElementById("start_battle").classList.add("hidden");
+            const battle_log = battle_data.battle_log
+            let Text = "";
+            const battleText = document.getElementById("battle-text");
+            battleText.classList.remove("hidden");
+            sprite_1 = selectedPokemon[0].querySelector("#sprite");
+            sprite_2 = selectedPokemon[1].querySelector("#sprite");
+            // insert health bars and moves text
+            delay(3000);
+            for (let i = 0; i < battle_log.length; i++){
+                if (!battle_log[i].pokemon_1.failed){
+                    if (battle_log[i].pokemon_1.move == 0 || battle_log[i].pokemon_1.move == 2){
+                        if (battle_log[i].pokemon_1.damage > 0){
+                            sprite_2.classList.add("damage");
+                            Text = `${battle_log[i].pokemon_1.nombre} made a ${((battle_log[i].pokemon_1.move == 0) ? "normal " : "special ")} attack that dealt ${battle_log[i].pokemon_1.damage} damage`;
+                            document.getElementById("pokemon_2").value = battle_log[i].pokemon_2.hp;
+                        }
+                        else{
+                            Text = `${battle_log[i].pokemon_1.nombre} made a ${((battle_log[i].pokemon_1.move == 0) ? "normal " : "special ")} attack, but it did no damage!!!`;
+                        }
+                    }
+                    else{
+                        sprite_1.classList.add("defense");
+                        Text = `${battle_log[i].pokemon_1.nombre} used a ${((battle_log[i].pokemon_1.move == 1) ? "normal " : "special ")} defense`;
+                    }
+                    battleText.textContent = sentenceCase(Text);
+                    await delay(500);
+                    sprite_2.classList.remove("damage");
+                    sprite_1.classList.remove("defense");
+                    await delay(500);
+                }
+                else {
+                    Text = `${battle_log[i].pokemon_1.nombre} tried to ${((battle_log[i].pokemon_1.move == 0 || battle_log[i].pokemon_1.move == 2) ? "attack": "defend itself")}, but they failed!!!`
+                    battleText.textContent = sentenceCase(Text);
+                    await delay (1000);
+                }
+                if (battle_log[i].pokemon_2.hp > 0){
+                    if (!battle_log[i].pokemon_2.failed){
+                        if (battle_log[i].pokemon_2.move == 0 || battle_log[i].pokemon_2.move == 2){
+                            if (battle_log[i].pokemon_2.damage > 0){
+                                sprite_1.classList.add("damage");
+                                Text = `${battle_log[i].pokemon_2.nombre} made a ${((battle_log[i].pokemon_2.move == 0) ? "normal " : "special ")} attack that dealt ${battle_log[i].pokemon_2.damage} damage`;
+                                document.getElementById("pokemon_1").value = battle_log[i].pokemon_1.hp;
+                            }
+                            else{
+                                Text = `${battle_log[i].pokemon_2.nombre} made a ${((battle_log[i].pokemon_2.move == 0) ? "normal " : "special ")} attack, but it did no damage!!!`;
+                            }
+                        }
+                        else{
+                            sprite_2.classList.add("defense");
+                            Text = `${battle_log[i].pokemon_2.nombre} used a ${((battle_log[i].pokemon_2.move == 1) ? "normal " : "special ")} defense`;
+                        }
+                        battleText.textContent = sentenceCase(Text);
+                        await delay(500);
+                        sprite_1.classList.remove("damage");
+                        sprite_2.classList.remove("defense");
+                        await delay(500);
+                    }
+                    else{
+                        Text = `${battle_log[i].pokemon_2.nombre} tried to ${((battle_log[i].pokemon_2.move == 0 || battle_log[i].pokemon_2.move == 2) ? "attack": "defend itself")}, but they failed!!!`
+                        battleText.textContent = sentenceCase(Text);
+                        await delay (1000);
+                    }
+                }
+            }
+            const battle_space = document.querySelector(".battle_container");
+            document.getElementById("pokemon_1").classList.add("hidden");
+            document.getElementById("pokemon_2").classList.add("hidden");
+            battle_space.textContent = "";
+            if (battle_data.winner == -1){
+                battle_space.appendChild(selectedPokemon[0]);
+                battle_space.appendChild(selectedPokemon[1]);
+                document.querySelector(".title").textContent = "It's a Tie";
+            }
+            else if (battle_data.winner == 0){
+                battle_space.appendChild(selectedPokemon[0]);
+                battle_space.classList.remove("battle_container");
+                battle_space.classList.add("battle_win_container");
+                document.querySelector(".title").textContent = `${sentenceCase(battle_log[0].pokemon_1.nombre)} wins !!!`;
+            }
+            else{
+                battle_space.appendChild(selectedPokemon[1]);
+                battle_space.classList.remove("battle_container");
+                battle_space.classList.add("battle_win_container");
+                document.querySelector(".title").textContent = `${sentenceCase(battle_log[0].pokemon_2.nombre)} wins !!!`;
+            }
+            document.getElementById("reset_battle").classList.remove("hidden");
+        }
+
+        function reset_battle(){
+            reset = true;
+            const battleText = document.getElementById("battle-text");
+            const battle_space = document.getElementById("battle_container");
+            battleText.textContent = "";
+            battleText.classList.add("hidden");
+            battle_space.textContent="";
+            battle_space.appendChild(selectedPokemon[0]);
+            battle_space.appendChild(selectedPokemon[1]);
+            battle_space.classList.add("battle_container");
+            battle_space.classList.remove("battle_win_container");
+            document.querySelector(".title").textContent = "Let's Battle!";
+            document.getElementById("reset_battle").classList.add("hidden");
+            document.getElementById("start_battle").classList.remove("hidden");
+            document.getElementById("pokemon_1").classList.remove("hidden");
+            document.getElementById("pokemon_2").classList.remove("hidden");
+            document.getElementById("pokemon_1").value = 100;
+            document.getElementById("pokemon_2").value = 100;
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function sentenceCase(str){
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+
+        function select_Pokemon(card_selected){
+            if (reset){
+                const id = card_selected.id;
+                const selectedcard = card_selected.cloneNode(true);
+                selectedcard.classList.add("selected");
+                selectedcard.querySelector(".poke_card").classList.remove("flipped");
+                if (selectedPokemon.length < 2){
+                    selectedPokemon.push(selectedcard);
+                }
+                else{
+                    selectedPokemon.shift();
+                    selectedPokemon.push(selectedcard);
+                }
+                container = document.getElementById("battle_container");
+                container.innerHTML = "";
+                selectedPokemon.forEach(card => container.appendChild(card));   
+                orderbyID();
+            }
+        }
+
+        // Llamado inicial de agregar pokemon para que no aparezca vacio inicialmente
+        async function init(){
+            await addPokemon();
+            select_Pokemon(document.getElementById("Pokemon1"));
+            select_Pokemon(document.getElementById("Pokemon2"));
+        }
+
+        init();
+
+        // Se agrego un script para revisar si el token de sesion generado sigue activo y en caso de que no
+        // lo sea se regresa a la pagina de login y se borra el token y la hora de vencimiento
+        const active_token = localStorage.getItem("sessionToken");
+        const expiration_time_active_token = localStorage.getItem("tokenExpiration");
+
+        if (!active_token || !expiration_time_active_token || expiration_time_active_token < Date.now()){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            localStorage.setItem("lastPage","/poke-battle");
+            window.location.href = "/"
+        }
+
+
+    </script>
+</html>

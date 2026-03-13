@@ -1,0 +1,79 @@
+<!--Creado por David Guerrero Aragon A01285837-->
+<!--Definicion del tipo de documento y lenguaje-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Referencia al documento de css para el estilo de la pagina y el encoding utilizado-->
+        <link rel="stylesheet" href="style.css">
+        <meta charset="UTF-8">
+        <title>Formula 1 Teams</title>
+    </head>
+    <!--Se define el body con la clase body_center para ayudar a centrar los elementos correctamente-->
+    <body class="body_center">
+        <!--Se define un div que contiene todos los elementos del header de la pagina la que te ayuda a moverte entre paginas-->
+        <div id="header-container" class="header"></div>
+        <!--Se define el titulo con el elemento h1 con la clase titulo para obtener los tamanos y disenos correctos-->
+        <h1 class="title">Formula 1 Teams</h1>
+        <!--Se define un div con la clase center box para establecer la configuracion del contenido-->
+        <div class="center_box">
+            <!--Se establecen las tarjetas con la informacion de los equipos con la clase center_box y cada uno de sus elementos con clases -->
+            <div class="team_card">
+                <div class="team_title">RedBull Racing</div>
+                <img src="https://media.gq.com.mx/photos/696ad78c7c92c52bd303d501/1:1/w_640%2Cc_limit/undefined" class="team_image">
+            </div>
+            <div class="team_card">
+                <div class="team_title">Cadillac F1 Team</div>
+                <img src="https://media.gq.com.mx/photos/6989fd12784878ba2d27d413/1:1/w_640%2Cc_limit/undefined" class="team_image">
+            </div>
+            <div class="team_card">
+                <div class="team_title">Mercedes AMG Petronas</div>
+                <img src="https://i.guim.co.uk/img/media/229486c6ce67b62c085efcc9b506510474068359/446_0_2107_1686/master/2107.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d51961ef4efb952798cae0574613322a" class="team_image">
+            </div>
+
+        </div>
+        <!--Se define el div para definir el footer de la pagina web con los "links" a las redes sociales de la pagina-->
+        <div class="footer" id="footer-container"></div>
+    </body>
+    <script>
+
+        // Funcion de logout que elimina el token y la fecha de finalizacion y regresa a la pagina de inicio de sesion
+        function logout(){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            localStorage.removeItem("lastPage");
+            window.location.href = "/"
+        }
+
+        // Codigo que realiza fetch al header de las paginas protegidas
+        fetch("/inner_header.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("header-container").innerHTML = data;
+            document.getElementById("logout").addEventListener("click", function(e){
+                e.preventDefault();
+                logout();
+            })
+        })
+
+        // Codigo que realiza fetch al footer
+        fetch("/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("footer-container").innerHTML = data;
+        })
+
+        // Se agrego un script para revisar si el token de sesion generado sigue activo y en caso de que no
+        // lo sea se regresa a la pagina de login y se borra el token y la hora de vencimiento
+        const active_token = localStorage.getItem("sessionToken");
+        const expiration_time_active_token = localStorage.getItem("tokenExpiration");
+
+        if (!active_token || !expiration_time_active_token || expiration_time_active_token < Date.now()){
+            localStorage.removeItem("sessionToken");
+            localStorage.removeItem("tokenExpiration");
+            localStorage.setItem("lastPage","/teams-info");
+            window.location.href = "/"
+        }
+
+
+    </script>
+</html>
